@@ -18,7 +18,7 @@ public class Bet implements Iterator<int[]>, Iterable<int[]> {
         content[this.betNumber - 1] = this.betNumber - 1;
     }
 
-    private int maxAllowed(int index){
+    private int maxAllowed(int index) {
         int maxIndex = betNumber - 1;
         return max - (maxIndex - index);
     }
@@ -26,7 +26,7 @@ public class Bet implements Iterator<int[]>, Iterable<int[]> {
     @Override
     public boolean hasNext() {
         int maxIndex = betNumber - 1;
-        for (int i = maxIndex; i > 0; i--) {
+        for (int i = maxIndex; i > -1; i--) {
             if (content[i] < max - (maxIndex - i)) {
                 return true;
             }
@@ -38,35 +38,36 @@ public class Bet implements Iterator<int[]>, Iterable<int[]> {
     @Override
     public int[] next() {
         int maxIndex = betNumber - 1;
-        for (int i = maxIndex; i > 0; i--) {
-            if (content[i] < max - (maxIndex - i)) {
-                content[i]++;
-                return content;
-            }else{
-
-                for (int j = i; j < betNumber; j++) {
-                    content[j] = content[j-1]+2;
-                }
+        if (content[maxIndex] < max) {
+            content[maxIndex]++;
+            return content;
+        } else {
+            if(!increment(maxIndex-1)){
+                throw new IllegalStateException("wot");
             }
         }
-
         return content;
     }
 
-    private boolean incrementBeforeLast(){
+    private boolean increment(int index) {
         int maxIndex = betNumber - 1;
-        for (int i = maxIndex-1; i > 0; i--) {
-            if(content[i] < maxAllowed(i)){
-                incrementRight(content[i]);
-                return true;
+        if (content[index] < maxAllowed(index)) {
+            content[index]++;
+            for (int i = index+1; i < betNumber; i++) {
+                content[i] = content[i-1]+1;
             }
+            return true;
         }
-        return false;
+        if(index == 0){
+            return false;
+        }
+        return increment(index-1);
     }
 
-    private void incrementRight(int index){
+    private void incrementRight(int index) {
         int maxIndex = betNumber - 1;
         for (int i = index; i < maxIndex; i++) {
+
         }
     }
 

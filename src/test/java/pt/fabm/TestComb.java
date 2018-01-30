@@ -57,7 +57,7 @@ public class TestComb {
 
     @Test
     public void testPrintCombinations(){
-        Bet bet = new Bet(6,4);
+        Bet bet = new Bet(50,5);
 
         for(int[] content:bet){
             System.out.println(IntStream.of(content).mapToObj(String::valueOf).collect(Collectors.joining(",")));
